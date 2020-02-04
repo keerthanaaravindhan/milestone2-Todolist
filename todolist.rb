@@ -1,67 +1,66 @@
-
 require "date"
 
 class Todo
-    attr_accessor :text,:due_date,:completed
-  
-    def initialize(txt,duedate,to_complete)
-     @text=txt
-     @due_date=duedate
-     @completed=to_complete
-    end
-  
-    def overdue?
-     Date.today>@due_date
-    end
-  
-    def due_today?
-      Date.today==@due_date
-    end
-  
-    def due_later?
-       Date.today<@due_date
-    end
+  attr_accessor :text, :due_date, :completed
 
-    def to_displayable_string
-      if completed==true
-         status="[X]"
-      else 
-         status="[ ]"
-      end
-      if due_today?
-         todo_line="#{status} #{@text}"
-      else
-         todo_line="#{status} #{@text} #{@due_date}"
-      end
-      return todo_line
+  def initialize(txt, duedate, to_complete)
+    @text = txt
+    @due_date = duedate
+    @completed = to_complete
+  end
+
+  def overdue?
+    Date.today > @due_date
+  end
+
+  def due_today?
+    Date.today == @due_date
+  end
+
+  def due_later?
+    Date.today < @due_date
+  end
+
+  def to_displayable_string
+    if completed == true
+      status = "[X]"
+    else
+      status = "[ ]"
     end
+    if due_today?
+      todo_line = "#{status} #{@text}"
+    else
+      todo_line = "#{status} #{@text} #{@due_date}"
+    end
+    return todo_line
+  end
 end
 
 class TodosList
   attr_accessor :todos
 
   def initialize(todos)
-      @todos = todos
+    @todos = todos
   end
 
   def add(todo)
-      @todos << todo
+    @todos << todo
   end
 
   def overdue
-      TodosList.new(@todos.filter { |todo| todo.overdue? })
-  end  
-  
+    TodosList.new(@todos.filter { |todo| todo.overdue? })
+  end
+
   def due_today
-      TodosList.new(@todos.filter { |todo| todo.due_today? })
-  end  
-  
+    TodosList.new(@todos.filter { |todo| todo.due_today? })
+  end
+
   def due_later
-      TodosList.new(@todos.filter { |todo| todo.due_later? })
-  end  
-  
+    TodosList.new(@todos.filter { |todo| todo.due_later? })
+  end
+
   def to_displayable_list
-       @todos=@todos.map {|todo| todo.to_displayable_string}
+    @todos = @todos.map { |todo| todo.to_displayable_string }
   end
 end
 
